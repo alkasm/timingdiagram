@@ -104,7 +104,7 @@ class TimingDiagram:
                 )
             )
         except IndexError:
-            raise ValueError(f"Cannot compare against an empty ```")
+            raise ValueError(f"Cannot compare an empty timing diagram.")
 
 
 def _compress(sorted_iterable, key):
@@ -113,7 +113,8 @@ def _compress(sorted_iterable, key):
     In other words, returns state changes. Also, always yields the last element
     (if it wasn't already yielded), even if it isn't a state change.
     """
-    g = ()
+    final = ()
     for _, g in groupby(sorted_iterable, key=key):
         yield next(g)
-    yield from deque(g, maxlen=1)  # yield final state if not already yielded
+        final = deque(g, maxlen=1)
+    yield from final  # yield final state if not already yielded

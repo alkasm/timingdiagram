@@ -1,21 +1,19 @@
-from bisect import bisect
 from heapq import merge
-from collections import namedtuple
 from itertools import groupby
 from collections import deque
 import operator
-
-
-class State(namedtuple("State", "state, time")):
-    def __str__(self):
-        return f"{self.__class__}({self.state:<5}, {str(self.time)})"
+from sortedcollections import SortedDict
 
 
 class TimingDiagram:
     """Two-state (True/False or 1/0) timing diagram with boolean algebra operations."""
 
-    def __init__(self, *state_time_pairs):
-        """Creates a timing diagram out of a sequence of (state, time) pairs.
+    def __init__(self, time_state_pairs):
+        """Creates a timing diagram out of a series of (time, state) pairs.
+
+        Notes
+        =====
+        Uses a orderedcollections.SortedDict for storing pairs.
         The input states can be any truthy/falsey values.
         The input times can be any type with a partial ordering.
         The input sequence does not need to be sorted (input is sorted during initialization).
@@ -23,39 +21,20 @@ class TimingDiagram:
 
         Example
         =======
-        >>> diagram = TimingDiagram((True, 0), (False, 1), (False, 5), (True, 10))
+        >>> diagram = TimingDiagram([(0, True), (1, False), (5, False), (10, True)])
         >>> print(~diagram)
-        TimingDiagram((False, 0), (True, 1), (False, 10))
+        TimingDiagram([(0, False), (1, True), (5, True), (10, False)])
         """
-        states = sorted(
-            (State(bool(s), t) for s, t in state_time_pairs),
-            key=operator.attrgetter("time"),
+        self.timeline = SortedDict(
+            _compress(time_state_pairs, key=operator.itemgetter(0))
         )
-        self._timeline = tuple(_compress(states, key=operator.attrgetter("state")))
-        self._breakpoints = [s.time for s in self.timeline[1:]]
 
-    @property
-    def timeline(self):
-        return self._timeline
-
-    @timeline.setter
-    def timeline(self, val):
-        raise AttributeError(f"{self.__class__.__qualname__} is immutable.")
-
-    def __len__(self):
-        """Number of events in the compressed timeline."""
-        return len(self.timeline)
-
-    def __getitem__(self, slice):
-        return self.timeline[slice]
+    def __getitem__(self, item):
+        return self.timeline[item]
 
     def __matmul__(self, time):
         """Alias for at()"""
         return self.at(time)
-
-    def __iter__(self):
-        """Iterator through the compressed timeline."""
-        return iter(self.timeline)
 
     def __eq__(self, other):
         """Returns a new timing diagram, True where the two diagrams are equal."""
@@ -79,32 +58,26 @@ class TimingDiagram:
 
     def __invert__(self):
         """Returns a new timing diagram with states flipped."""
-        return TimingDiagram(*(State(not s, t) for s, t in self))
-
-    def __str__(self):
-        args = ", ".join((str(tuple(t)) for t in self))
-        return f"{self.__class__.__qualname__}({args})"
-
-    def __repr__(self):
-        return f"{self.__class__.__qualname__}{tuple(self.timeline)}"
+        return TimingDiagram(((t, not s) for t, s in self.timeline.items()))
 
     def at(self, time):
         """Returns the state at a particular time."""
-        return self.timeline[bisect(self._breakpoints, time)]
+        idx = max(0, self.timeline.bisect(time) - 1)
+        return self.timeline.values()[idx]
 
     def compare(self, other, key):
-        """Constructs a new timing diagram based on comparisons between two diagrams.
-        True when key(self[time], other[time]) is truthy for each time in the timelines.
+        """Constructs a new timing diagram based on comparisons between two diagrams,
+        with (time, key(self[time], other[time])) for each time in the timelines.
         """
-        try:
-            return TimingDiagram(
-                *(
-                    State(key((self @ s.time).state, (other @ s.time).state), s.time)
-                    for s in merge(self, other, key=operator.attrgetter("time"))
-                )
+        return TimingDiagram(
+            (
+                (k, key(self.at(k), other.at(k)))
+                for k in merge(self.timeline.keys(), other.timeline.keys())
             )
-        except IndexError:
-            raise ValueError(f"Cannot compare an empty timing diagram.")
+        )
+
+    def __repr__(self):
+        return f"{self.__class__.__qualname__}({list(self.timeline.items())})"
 
 
 def _compress(sorted_iterable, key):
@@ -118,3 +91,4 @@ def _compress(sorted_iterable, key):
         yield next(g)
         final = deque(g, maxlen=1)
     yield from final  # yield final state if not already yielded
+

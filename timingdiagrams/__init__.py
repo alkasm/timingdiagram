@@ -25,7 +25,7 @@ class TimingDiagram:
         TimingDiagram([(0, False), (1, True), (10, False)])
         """
         self.timeline = SortedDict(
-            _compress(time_state_pairs, key=operator.itemgetter(0))
+            _compress(time_state_pairs, key=operator.itemgetter(1))
         )
 
     def __getitem__(self, item):

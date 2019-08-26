@@ -14,7 +14,7 @@
 from timingdiagrams import TimingDiagram
 
 def fromstring(s):
-        return TimingDiagram([(i, c == "-") for i, c in enumerate(s)])
+    return TimingDiagram([(i, c == "-") for i, c in enumerate(s)])
 
 def tostring(diagram):
     tl = diagram.timeline.items()

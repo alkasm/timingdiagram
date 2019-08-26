@@ -13,17 +13,16 @@ class TimingDiagram:
 
         Notes
         =====
-        Uses a orderedcollections.SortedDict for storing pairs.
         The input states can be any truthy/falsey values.
         The input times can be any type with a partial ordering.
         The input sequence does not need to be sorted (input is sorted during initialization).
-        Compresses duplicate sequential states and stores them in the timeline attribute.
+        Compresses duplicate sequential states and stores them in the `timeline` attribute.
 
         Example
         =======
         >>> diagram = TimingDiagram([(0, True), (1, False), (5, False), (10, True)])
         >>> print(~diagram)
-        TimingDiagram([(0, False), (1, True), (5, True), (10, False)])
+        TimingDiagram([(0, False), (1, True), (10, False)])
         """
         self.timeline = SortedDict(
             _compress(time_state_pairs, key=operator.itemgetter(0))
@@ -61,7 +60,7 @@ class TimingDiagram:
         return TimingDiagram(((t, not s) for t, s in self.timeline.items()))
 
     def at(self, time):
-        """Returns the state at a particular time."""
+        """Returns the state at a particular time. Uses bisection for search (binary search)."""
         idx = max(0, self.timeline.bisect(time) - 1)
         return self.timeline.values()[idx]
 
@@ -69,6 +68,7 @@ class TimingDiagram:
         """Constructs a new timing diagram based on comparisons between two diagrams,
         with (time, key(self[time], other[time])) for each time in the timelines.
         """
+        # TODO: Implement linear algorithm instead of .at() for each time, which is O(n log n).
         return TimingDiagram(
             (
                 (k, key(self.at(k), other.at(k)))
@@ -91,4 +91,3 @@ def _compress(sorted_iterable, key):
         yield next(g)
         final = deque(g, maxlen=1)
     yield from final  # yield final state if not already yielded
-

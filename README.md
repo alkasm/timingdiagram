@@ -11,7 +11,7 @@
 # Above examples in code
 
 ```python
-from timingdiagrams import TimingDiagram
+from timingdiagram import TimingDiagram
 
 def fromstring(s):
     return TimingDiagram([(i, c == "-") for i, c in enumerate(s)])

@@ -31,7 +31,7 @@ TimingDiagram([(0, False), (1, True), (2, False), (3, True), (5, False), (6, Tru
 
 ## Example
 
-Suppose you had a log of users logging in/out of a service, that included the time, user id, and action the user took. We can view each user's login/logout history as a timing diagram, and simply `&` them all together to see when all users were logged in at the same time:
+Suppose you had a log of users singing in and out of a service, and the log included the time, user id, and action the user took. We can view each user's login/logout history as a timing diagram, and simply `&` them all together to see when all users were logged in at the same time:
 
 ```python
 log = """2019-08-27T19:38:50 001768bf-af44-46a6-890d-048f2c50aa29 login
@@ -64,7 +64,7 @@ for row in log:
 all_logged_in = reduce(lambda d1, d2: d1 & d2, map(TimingDiagram, sessions.values()))
 ```
 
-And here `all_logged_in` gives us a timing diagram corresponding to all users being logged in.
+From just a few lines of code, we get a timing diagram corresponding to when all the users were logged in:
 
 ```
 TimingDiagram([
@@ -75,4 +75,4 @@ TimingDiagram([
  ])
  ```
  
-Here we can easily see that all users were logged in between 22:55:54 and 23:08:07 on 2019-08-27. The additional states at the beginning and end signify the start and end times of the logs.
+So all users were logged in between `22:55:54` and `23:08:07` on `2019-08-27`. The additional states at the beginning and end signify the start and end times of the logs.

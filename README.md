@@ -1,7 +1,6 @@
-# Timing Diagram
 <img src="https://raw.githubusercontent.com/alkasm/timingdiagram/readme-image/timingdiagram.svg?sanitize=true" alt="Visual timing diagram example" width="100%">
 
-Timing diagrams provide a clean abstraction to parsing discrete state changes over time.
+Timing diagrams provide a clean abstraction to work with discrete state changes over time.
 
 * Reduce data to state changes
 * Easily compare states of multiple objects over time

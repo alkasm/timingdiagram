@@ -31,7 +31,7 @@ TimingDiagram([(0, False), (1, True), (2, False), (3, True), (5, False), (6, Tru
 
 ## Example
 
-Suppose you had a log of users singing in and out of a service, and the log included the time, user id, and action the user took. We can view each user's login/logout history as a timing diagram, and simply `&` them all together to see when all users were logged in at the same time:
+Suppose you had a log of users signing in and out of a service, and the log included the time, user id, and action the user took. We can view each user's login/logout history as a timing diagram, and simply `&` them all together to see when all users were logged in at the same time:
 
 ```python
 log = """2019-08-27T19:38:50 001768bf-af44-46a6-890d-048f2c50aa29 login

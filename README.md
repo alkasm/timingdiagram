@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/alkasm/timingdiagram/readme-image/timingdiagram.svg?sanitize=true" alt="Visual timing diagram example" width="100%">
+# timingdiagram
 
 Timing diagrams provide a clean abstraction to work with discrete state changes over time.
 
@@ -6,6 +6,8 @@ Timing diagrams provide a clean abstraction to work with discrete state changes 
 * Easily compare states of multiple objects over time
 * Query state by time
 * Use any ordered index, not just time
+
+<img src="https://raw.githubusercontent.com/alkasm/timingdiagram/readme-image/timingdiagram.svg?sanitize=true" alt="Visual timing diagram example" width="100%">
 
 ## Getting Started
 

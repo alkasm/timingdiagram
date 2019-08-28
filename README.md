@@ -29,3 +29,51 @@ $ source venv/bin/activate
 >>> d1 | d2
 TimingDiagram([(0, False), (1, True), (2, False), (3, True), (5, False), (6, True)])
 ```
+
+## Example
+
+Suppose you had a log of users logging in/out of a service, that included the time, user id, and action the user took. We can view each user's login/logout history as a timing diagram, and simply `&` them all together to see when all users were logged in at the same time:
+
+```python
+log = """2019-08-27T19:38:50 001768bf-af44-46a6-890d-048f2c50aa29 login
+2019-08-27T19:51:11 084c07f0-dd0d-46a3-8eb5-1d4cb13756a4 logout
+2019-08-27T19:55:25 001768bf-af44-46a6-890d-048f2c50aa29 logout
+2019-08-27T19:58:37 001768bf-af44-46a6-890d-048f2c50aa29 login
+2019-08-27T20:17:21 a8118353-eb81-4ce0-8d10-6f3f9de6d7ca login
+2019-08-27T20:45:19 001768bf-af44-46a6-890d-048f2c50aa29 logout
+2019-08-27T21:01:45 001768bf-af44-46a6-890d-048f2c50aa29 login
+2019-08-27T21:18:09 001768bf-af44-46a6-890d-048f2c50aa29 logout
+2019-08-27T22:02:37 084c07f0-dd0d-46a3-8eb5-1d4cb13756a4 login
+2019-08-27T22:55:54 001768bf-af44-46a6-890d-048f2c50aa29 login
+2019-08-27T23:08:07 001768bf-af44-46a6-890d-048f2c50aa29 logout
+2019-08-27T23:23:04 a8118353-eb81-4ce0-8d10-6f3f9de6d7ca logout
+2019-08-27T23:47:50 001768bf-af44-46a6-890d-048f2c50aa29 login
+2019-08-27T23:55:10 084c07f0-dd0d-46a3-8eb5-1d4cb13756a4 logout
+2019-08-27T23:56:33 001768bf-af44-46a6-890d-048f2c50aa29 logout""".split("\n")
+
+
+from collections import defaultdict
+from functools import reduce
+from timingdiagram import TimingDiagram
+
+
+sessions = defaultdict(list)
+for row in log:
+    ts, userid, action = row.split()
+    sessions[userid].append((ts, action == "login"))
+
+all_logged_in = reduce(lambda d1, d2: d1 & d2, map(TimingDiagram, sessions.values()))
+```
+
+And here `all_logged_in` gives us a timing diagram corresponding to all users being logged in.
+
+```
+TimingDiagram([
+  ('2019-08-27T19:38:50', False), 
+  ('2019-08-27T22:55:54', True), 
+  ('2019-08-27T23:08:07', False), 
+  ('2019-08-27T23:56:33', False)
+ ])
+ ```
+ 
+Here we can easily see that all users were logged in between 22:55:54 and 23:08:07 on 2019-08-27. The additional states at the beginning and end signify the start and end times of the logs.

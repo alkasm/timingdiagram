@@ -12,6 +12,7 @@ setup(
     packages=find_packages(),
     description="Temporal boolean algebra",
     long_description=readme,
+    long_description_content_type="text/markdown",
     python_requires=">=3.6",
     classifiers=[
         "Programming Language :: Python :: 3",

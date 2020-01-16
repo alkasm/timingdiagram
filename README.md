@@ -20,8 +20,13 @@ pip install timingdiagram-alkasm
 From source:
 
 ```sh
-Note that you must have `pip >= 19.0` installed in your environment to install from source, since this project uses the `pyproject.toml` file defined in [PEP-0517](https://www.python.org/dev/peps/pep-0517/) instead of `setup.py`. More from PyPA [here](https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support).
+git clone https://github.com/alkasm/timingdiagram
+cd timingdiagram
+pip install .
 ```
+
+Note that you must have `pip >= 19.0` installed in your environment to install from source, since this project uses the `pyproject.toml` file defined in [PEP-0517](https://www.python.org/dev/peps/pep-0517/) instead of `setup.py`. More from PyPA [here](https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support).
+
 
 ## Try it out
 

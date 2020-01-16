@@ -1,22 +1,26 @@
+<img src="https://raw.githubusercontent.com/alkasm/timingdiagram/master/timingdiagram.svg?sanitize=true" alt="Visual timing diagram example" width="100%">
+
 # timingdiagram
 
-A clean abstraction to work with discrete state changes over time.
+Work with discrete state changes over time.
 
 * Reduce data to state changes
-* Easily compare states of multiple objects over time
+* Compare diagrams over time
 * Query state by time
 * Use any ordered index
 
-![Visual timing diagram](https://raw.githubusercontent.com/alkasm/timingdiagram/master/timingdiagram.svg?sanitize=true)
-
 ## Install
 
-As with any other Python project, install directly into a virtual environment of choice:
+From PyPI with `pip`:
 
-```bash
-$ python3 -m venv venv
-$ source venv/bin/activate
-(venv) $ pip install git+https://github.com/alkasm/timingdiagram
+```sh
+pip install timingdiagram-alkasm
+```
+
+From source:
+
+```sh
+Note that you must have `pip >= 19.0` installed in your environment to install from source, since this project uses the `pyproject.toml` file defined in [PEP-0517](https://www.python.org/dev/peps/pep-0517/) instead of `setup.py`. More from PyPA [here](https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support).
 ```
 
 ## Try it out

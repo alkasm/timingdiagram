@@ -1,3 +1,6 @@
+"""Temporal boolean algebra."""
+__version__ = "0.3.2"
+
 from heapq import merge
 from itertools import groupby
 from collections import deque

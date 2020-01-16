@@ -1,17 +1,15 @@
-<img src="https://raw.githubusercontent.com/alkasm/timingdiagram/master/timingdiagram.svg?sanitize=true" alt="Visual timing diagram example" width="100%">
-
 # timingdiagram
 
-Timing diagrams provide a clean abstraction to work with discrete state changes over time.
+A clean abstraction to work with discrete state changes over time.
 
 * Reduce data to state changes
 * Easily compare states of multiple objects over time
 * Query state by time
-* Use any ordered index, not just time
+* Use any ordered index
 
-## Getting Started
+![Visual timing diagram](https://raw.githubusercontent.com/alkasm/timingdiagram/master/timingdiagram.svg?sanitize=true)
 
-### Install
+## Install
 
 As with any other Python project, install directly into a virtual environment of choice:
 
@@ -21,7 +19,7 @@ $ source venv/bin/activate
 (venv) $ pip install git+https://github.com/alkasm/timingdiagram
 ```
 
-### Try it out
+## Try it out
 
 ```python
 >>> from timingdiagram import TimingDiagram

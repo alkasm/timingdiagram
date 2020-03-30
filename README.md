@@ -1,6 +1,6 @@
-<img src="https://raw.githubusercontent.com/alkasm/timingdiagram/master/timingdiagram.svg?sanitize=true" alt="Visual timing diagram example" width="100%">
-
 # timingdiagram
+
+<img src="https://raw.githubusercontent.com/alkasm/timingdiagram/master/timingdiagram.svg?sanitize=true" alt="Visual timing diagram example" width="100%">
 
 Work with discrete state changes over time.
 
@@ -43,7 +43,8 @@ TimingDiagram([(0, False), (1, True), (2, False), (3, True), (5, False), (6, Tru
 Suppose you had a log of users signing in and out of a service, and the log included the time, user id, and action the user took. We can view each user's login/logout history as a timing diagram, and simply `&` them all together to see when all users were logged in at the same time:
 
 ```python
-log = """2019-08-27T19:38:50 001768bf-af44-46a6-890d-048f2c50aa29 login
+log = """\
+2019-08-27T19:38:50 001768bf-af44-46a6-890d-048f2c50aa29 login
 2019-08-27T19:51:11 084c07f0-dd0d-46a3-8eb5-1d4cb13756a4 logout
 2019-08-27T19:55:25 001768bf-af44-46a6-890d-048f2c50aa29 logout
 2019-08-27T19:58:37 001768bf-af44-46a6-890d-048f2c50aa29 login
@@ -57,7 +58,8 @@ log = """2019-08-27T19:38:50 001768bf-af44-46a6-890d-048f2c50aa29 login
 2019-08-27T23:23:04 a8118353-eb81-4ce0-8d10-6f3f9de6d7ca logout
 2019-08-27T23:47:50 001768bf-af44-46a6-890d-048f2c50aa29 login
 2019-08-27T23:55:10 084c07f0-dd0d-46a3-8eb5-1d4cb13756a4 logout
-2019-08-27T23:56:33 001768bf-af44-46a6-890d-048f2c50aa29 logout""".split("\n")
+2019-08-27T23:56:33 001768bf-af44-46a6-890d-048f2c50aa29 logout\
+""".split("\n")
 
 
 from collections import defaultdict
@@ -75,7 +77,7 @@ all_logged_in = reduce(lambda d1, d2: d1 & d2, map(TimingDiagram, sessions.value
 
 From just a few lines of code, we get a timing diagram corresponding to when all the users were logged in:
 
-```
+```python
 TimingDiagram([
   ('2019-08-27T19:38:50', False), 
   ('2019-08-27T22:55:54', True), 
